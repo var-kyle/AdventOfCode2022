@@ -16,7 +16,12 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(file)
 
 	scanner := bufio.NewScanner(file)
 
